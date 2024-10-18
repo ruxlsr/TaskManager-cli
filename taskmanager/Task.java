@@ -23,13 +23,7 @@ public class Task {
          this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
         this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
-    public Task(String id, String description, Status status){
-         this.id = id;
-        this.status = status;
-        this.description = description;
-        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
-        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
-    }
+
     public Task(String id, String description, Status status, String updatedAt,String createdAt){
         this.id = id;
         this.status = status;
@@ -38,18 +32,16 @@ public class Task {
         this.updatedAt = updatedAt;
     }
     public String toJson() {
-        String json = "{\"id\":\"" + id +
+
+        return "{\"id\":\"" + id +
                 "\", \"description\":\"" + description + "\", " +
                 "\"status\":\"" + status.toString() + "\", " +
                 "\"createdAt\":\"" + createdAt + "\", " +
                 "\"updatedAt\":\"" + updatedAt + "\"}";
-
-        return json;
     }
     @Override
     public String toString(){
-        String taskString = id+" | "+description+" | "+status.toString()+" | "+ createdAt+ " | "+updatedAt;
-        return taskString;
+        return id+" | "+description+" | "+status.toString()+" | "+ createdAt+ " | "+updatedAt;
     }
     
     public void toggleToInProgress(){

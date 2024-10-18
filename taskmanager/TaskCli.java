@@ -13,7 +13,7 @@ public class TaskCli {
     public static void main(String[] args) {
         TaskManager taskManager = new  TaskManager();
         if (args.length == 0) {
-            //defaultOutput();
+            defaultOutput();
         }else{
             switch (args[0]) {
                 case "add":
