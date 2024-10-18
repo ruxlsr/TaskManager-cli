@@ -13,13 +13,13 @@ public class TaskCli {
     public static void main(String[] args) {
         TaskManager taskManager = new  TaskManager();
         if (args.length == 0) {
-            defaultOutput();
+            //defaultOutput();
         }else{
             switch (args[0]) {
                 case "add":
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
-                            taskManager.saveTasks(args[1]);
+                            taskManager.saveTask(args[1]);
                             System.out.println("task added => \""+args[1]+"\"");
                         }else{
                             throw new Exception("Syntax Error: add [task to add]");
@@ -55,8 +55,14 @@ public class TaskCli {
                     try {    
                         if(args.length == 1){
                             System.out.println("your command  :: "+args[0]);
+                            taskManager.listTask();
                         }else if(args.length == 2){
                             System.out.println("your command  :: "+args[0]+" "+ args[1]);
+                            switch (args[1]){
+                                case "todo" -> taskManager.listTaskTodo();
+                                case "done" -> taskManager.listTaskDone();
+                                case "in-progress" -> taskManager.listTaskInProgress();
+                            }
                         }else{
                             throw new Exception("Syntax error: list");
                         }
@@ -87,7 +93,7 @@ public class TaskCli {
                     }
                     break;
                 default:
-                    defaultOutput();
+                    //defaultOutput();
             }
         }
     }

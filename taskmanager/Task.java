@@ -2,6 +2,7 @@
 package taskmanager;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -12,37 +13,57 @@ public class Task {
     String description;
     Status status;
     String updatedAt;
+    String createdAt;
+
     
-    public Task(String id, String description, Status status, String UpdatedAt){
+    public Task(String id, String description){
         this.id = id;
-        this.status = status;
+        this.status = Status.TODO;
         this.description = description;
-        this.updatedAt = UpdatedAt;
+         this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
     public Task(String id, String description, Status status){
          this.id = id;
         this.status = status;
         this.description = description;
-        this.updatedAt = LocalDateTime.now().toString();
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
+    }
+    public Task(String id, String description, Status status, String updatedAt,String createdAt){
+        this.id = id;
+        this.status = status;
+        this.description = description;
+        this.createdAt =createdAt;
+        this.updatedAt = updatedAt;
     }
     public String toJson() {
         String json = "{\"id\":\"" + id +
-                "\",\"description\":\"" + description + "\"," +
-                "\"status\":\"" + status.toString() + "\"," +
-                "\"updataedAt\":\"" + updatedAt + "\"}"; // Supprimer la virgule finale
+                "\", \"description\":\"" + description + "\", " +
+                "\"status\":\"" + status.toString() + "\", " +
+                "\"createdAt\":\"" + createdAt + "\", " +
+                "\"updatedAt\":\"" + updatedAt + "\"}";
 
         return json;
+    }
+    @Override
+    public String toString(){
+        String taskString = id+" | "+description+" | "+status.toString()+" | "+ createdAt+ " | "+updatedAt;
+        return taskString;
     }
     
     public void toggleToInProgress(){
         this.status  = Status.IN_PROGRESS;
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
     
     public void toggleToTodo(){
         this.status  = Status.TODO;
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
     
     public void toggleToDone(){
         this.status  = Status.DONE;
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
 }

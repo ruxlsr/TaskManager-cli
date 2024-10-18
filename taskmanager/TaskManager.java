@@ -1,130 +1,106 @@
 
 package taskmanager;
 
+/*
+ * Ajouter des taches,
+ * Recuperer des taches
+ * supprimer des taches
+ * modifier des taches
+ * */
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-/**
- *
- * @author Rux-Lsr
- */
+
 public class TaskManager {
-    static private TaskList taskList;
-    static private Path taskJsonfile;
-    static private String json;
-    
-    public TaskManager() {
-        taskList = new TaskList();
-        taskJsonfile = Path.of("./task.json");
-        try {
-           
-            if(!Files.exists(taskJsonfile)){
-                Files.createFile(taskJsonfile);
-                
-            }else{
-                json = Files.readString(taskJsonfile);
-                if(!json.equals("[]"))
-                    fillTheTaskList();
-            }
-        } catch (Exception ex) {
-            System.err.println("TaskManager constructor: "+ex.getLocalizedMessage());
+    final Path JSON_FILE_PATH = Path.of("./task.json");
+    TaskList tasks;
+
+    public TaskManager(){
+        tasks = new TaskList();
+        try{
+            loadTaskInMemory();
+        }catch (Exception exception){
+            MessageDisplayer.errMessage(exception);
+            exception.printStackTrace();
         }
-       // System.out.println("contenu du json: "+json);
-    }
-    
-    public static void saveTasks(String description) throws IOException{
-        taskList.addTask(description);
-        Files.writeString(taskJsonfile, taskList.toJson().toString());
     }
 
-    public static List<String> parseJson() {
-        List<String> brutObject = new ArrayList<>();
 
+    public void loadTaskInMemory() throws Exception {
+        if(!Files.exists(JSON_FILE_PATH)){
+            Files.createFile(JSON_FILE_PATH);
+            Files.writeString(JSON_FILE_PATH, "[\n]");
+        }
+
+        String json = Files.readString(JSON_FILE_PATH);
+        //MessageDisplayer.debMessage("Contenue de fichier :: "+ json);
+        parseJsonString(json);
+    }
+
+    public void parseJsonString(String json) throws Exception {
+        json = json.replace("[", "").replace("]", "");
+        //MessageDisplayer.debMessage("After remove [ and ] ==> "+ json);
         json = json.trim();
-        System.out.println("debug 1" + json);
 
-        try {
-            if (json.startsWith("[") && json.endsWith("]")) {
-                json = json.trim().substring(1, json.length() - 1);
-                System.out.println("debug 2 " + json);
-                String[] jsonObjects = json.split("\\},\\{"); // Corrigé: utiliser le séparateur correct
-                System.out.println("debug 3: " + jsonObjects[0]);
+        String[] jsonObjects = json.split("},");
 
-                for (String objet : jsonObjects) {
-                    objet = objet.trim();
-                    System.out.println("debug 4: " + objet);
+        int i = 0;
+        for(String jsonObject: jsonObjects){
+            jsonObject = jsonObject.replace("\n", "").trim();
+            jsonObject = jsonObject.endsWith("\"") ? jsonObject+"}":jsonObject;
+            jsonObjects[i++] = jsonObject;
 
-                    // Supprimer les éléments vides
-                    if (!objet.isEmpty()) {
-                        if (objet.startsWith("{") && objet.endsWith("}")) {
-                            objet = objet.substring(1, objet.length() - 1);
-                            objet = objet.trim();
-                        } else if (objet.startsWith(",") && objet.length() > 2 && objet.charAt(1) == '{') {
-                            objet = objet.substring(1, objet.length() - 1);
-                            objet = objet.trim();
-
-                            if (objet.startsWith("{")) {
-                                objet = objet.substring(1, objet.length() - 1);
-                            }
-                            objet = objet.trim();
-                        } else {
-                            continue;
-                        }
-
-                        brutObject.add(objet);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("parseJson error: " + e.getLocalizedMessage());
+            //MessageDisplayer.debMessage(jsonObject);
         }
 
-        return brutObject;
-    }
-
-    public static void fillTheTaskList() {
-        List<String> parsedJson = parseJson();
-
-        try {
-            parsedJson.stream().forEach((jsonTask) -> {
-                System.out.println("debug 5: " + jsonTask);
-                Task task = getAttributes(jsonTask); // Obtenez l'objet Task
-                taskList.addTask(task.toJson()); // Utilisez toJson pour ajouter la tâche
-            });
-        } catch (Exception e) {
-            System.err.println("fill the task list error: " + e.getLocalizedMessage());
-        }
-    }
-
-    public static Task getAttributes(String objet) {
-        String[] attributs = objet.split(",");
-        String[] values = new String[4]; // Tableau pour stocker les valeurs
-
-        for (int i = 0; i < attributs.length; i++) {
-            String[] parts = attributs[i].split(":"); // Diviser l'attribut et sa valeur
-            if (parts.length == 2) { // Vérifier que l'attribut a une valeur
-                values[i] = parts[1].trim().replaceAll("[{\"}]", ""); // Supprimer les guillemets
-            }
+        for(String jsonObject: jsonObjects){
+            String[] tasksString = parseJsonObjectString(jsonObject);
+            tasks.addTask(
+                    new  Task(tasksString[0].split(":")[1].replace("\"", " ").trim(),
+                            tasksString[1].split(":")[1].replace("\"", " ").trim(),
+                            Status.getStatus(tasksString[2].split(":")[1].replace("\"", " ").trim()) ,
+                            tasksString[3].split(":")[1].replace("\"", " ").trim(),
+                            tasksString[4].split(":")[1].replace("\"", " ").trim()
+                    )
+            );
         }
 
-        return new Task(values[0], values[1], getStatus(values[2]), values[3]);
     }
-    
-    public static Status getStatus(String value){
-        switch(value) {
-            case "TODO":
-                return Status.TODO;
-            case "DONE":
-                return Status.DONE;
-            case "IN_PROGRESS":
-                return Status.IN_PROGRESS;
-            default:
-                return Status.TODO;
-        }
+
+    public String[] parseJsonObjectString(String jsonObject){
+        jsonObject = jsonObject.replace("{", " ").replace("}", " ").trim();
+        //MessageDisplayer.debMessage(jsonObject);
+        return jsonObject.split(", ");
     }
-    
-   
+
+    /*
+     * Charger la liste des taches du fichier en memoire,
+     * Y ajouter celle passer en parametre
+     * sauvegarder dans le fichier
+     */
+
+    public void saveTask(String description) throws IOException {
+        tasks.addTask(description);
+        Files.writeString(JSON_FILE_PATH, tasks.toJson());
+    }
+
+    /*
+    * Tasks listing
+    */
+    public  void listTask(){
+        tasks.list();
+    }
+    public  void listTaskTodo(){
+        tasks.listTodo();
+    }
+    public  void listTaskInProgress(){
+        tasks.listProgress();
+    }
+    public  void listTaskDone(){
+        tasks.listDone();
+    }
 } 

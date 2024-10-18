@@ -23,6 +23,20 @@ public enum Status {
     public String toString() {
         return this.name;
     }
+
+    public static Status getStatus(String name) throws Exception {
+        switch (name){
+            case "TODO":
+                return Status.TODO;
+            case "IN_PROGRESS":
+                return Status.IN_PROGRESS;
+            case "DONE":
+                return Status.DONE;
+            default:
+                MessageDisplayer.errMessage(name);
+                throw new Exception("Status not found");
+        }
+    }
     
     
 }
