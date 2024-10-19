@@ -81,11 +81,7 @@ public class TaskManager {
 
     public void add(String description){
         tasksList.addTask(description);
-        try {
-            saveTask();
-        } catch (IOException e) {
-            MessageDisplayer.errMessage(e);
-        }
+        saveTask();
     }
 
     public void delete(String id) throws Exception {
@@ -100,8 +96,12 @@ public class TaskManager {
         throw new Exception("The id("+id+") you passed doesn't exists");
     }
 
-    public void saveTask() throws IOException {
-        Files.writeString(JSON_FILE_PATH, tasksList.toJson());
+    public void saveTask()  {
+        try {
+            Files.writeString(JSON_FILE_PATH, tasksList.toJson());
+        } catch (IOException e) {
+            MessageDisplayer.errMessage(e);
+        }
     }
 
     /*
@@ -118,5 +118,16 @@ public class TaskManager {
     }
     public  void listTaskDone(){
         tasksList.listDone();
+    }
+
+
+    public void markAsInProgress(String id){
+        tasksList.markTaskAsInProgress(id);
+        saveTask();
+    }
+
+    public void mrakAsDone(String id){
+        tasksList.markTaskAsDone(id);
+        saveTask();
     }
 } 

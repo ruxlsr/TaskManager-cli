@@ -7,7 +7,7 @@ public class MessageDisplayer {
         System.err.println("ERROR :: "+err_message);
     }
 
-    static void debMessage(String debMessage){
+    public static void debMessage(String debMessage){
         System.out.println("DEBUG :: "+debMessage);
     }
 

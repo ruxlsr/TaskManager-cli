@@ -62,4 +62,9 @@ public class Task {
     public String getId() {
         return id;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
+    }
 }

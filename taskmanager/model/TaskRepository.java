@@ -1,6 +1,8 @@
 
 package taskmanager.model;
 
+import taskmanager.MessageDisplayer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +28,6 @@ public class TaskRepository {
     public void addTask(Task task){
         task.id = String.valueOf(idGenerator.incrementAndGet());
         tasks.add(task);
-        //MessageDisplayer.debMessage("Task loaded successfully (ID: "+ task.id);
     }
 
     public void deleteTask(Task task){
@@ -34,17 +35,23 @@ public class TaskRepository {
         //MessageDisplayer.debMessage(" Task deleted successfully ID: "+task.id);
     }
 
-    public void update(String id, String updatedDescription){
+    public void updateDescription(String id, String updatedDescription){
         int intId = Integer.parseInt(id);
         String[] result = {tasks.get(intId).description, updatedDescription}; 
-        tasks.get(intId).description = updatedDescription;
+        tasks.get(intId).setDescription(updatedDescription) ;
         
         System.out.printf("Task updated successfully (ID: %d) : (old)%s => (new)%s", intId, result[0], result[1]);
     }
     
     public void markTaskAsInProgress(String id){
-        int intId = Integer.parseInt(id);
-        tasks.get(intId).toggleToInProgress();
+        for (Task task: tasks){
+            if(task.id.equals(id)){
+                tasks.get(Integer.parseInt(id)-1).toggleToInProgress();
+                MessageDisplayer.debMessage("Marked as in progress");
+                return;
+            }
+        }
+        MessageDisplayer.errMessage("The id you passed doen't exists ID:"+id);
     }
     public void markTaskAsTodo(String id){
         int intId = Integer.parseInt(id);
@@ -74,13 +81,13 @@ public class TaskRepository {
     }
 
     public void listTodo(){
-        tasks.stream().filter(task -> task.status == Status.TODO).forEach(task -> System.out.println(task.toString()));
+        tasks.stream().filter(task -> task.status == Status.TODO).forEach(System.out::println);
     }
     public void listDone(){
-        tasks.stream().filter(task -> task.status == Status.DONE).forEach(task -> System.out.println(task.toString()));
+        tasks.stream().filter(task -> task.status == Status.DONE).forEach(System.out::println);
     }
     public void listProgress(){
-        tasks.stream().filter(task -> task.status == Status.IN_PROGRESS).forEach(task -> System.out.println(task.toString()));
+        tasks.stream().filter(task -> task.status == Status.IN_PROGRESS).forEach(System.out::println);
     }
 
     public List<Task> getTasks() {
