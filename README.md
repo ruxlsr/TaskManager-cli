@@ -16,7 +16,7 @@ cd taskManager-cli
 ```
 
 3. Compile the source code
- ```bash
+```bash
 javac taskmanager/*.java taskmanager/model/*.java
 ```
 4. Create the JAR file
@@ -24,11 +24,11 @@ javac taskmanager/*.java taskmanager/model/*.java
 jar cfe task-cli taskmanager.TaskCli ./taskmanager/*.class taskmanager/model/*.class ./taskmanager/TaskCli.class
 ```
 5. Run the app
-   ```bash
-   java -jar task-cli <command>
-   ```
+```bash
+java -jar task-cli <command>
+```
 
-6. Usage
+# Usage
    ``` bash
    # Add a new task 
    java -jar task-cli add <description of the task>
