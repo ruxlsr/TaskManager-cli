@@ -87,6 +87,7 @@ public class TaskCli {
                 case "update":
                     try {
                         if(args.length == 3 && !args[1].isEmpty() && !args[2].isEmpty()){
+                            taskManager.updateDescription(args[1], args[2]);
                             System.out.println("task updated : ID-> ("+args[1]+")=> \""+ args[2]+"\"");
                         }else{
                             throw new Exception("Syntax error: update [task_id to update] [new task description]");

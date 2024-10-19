@@ -130,4 +130,9 @@ public class TaskManager {
         tasksList.markTaskAsDone(id);
         saveTask();
     }
+
+    public void updateDescription(String id, String newDescription){
+        tasksList.updateDescription(id, newDescription);
+        saveTask();
+    }
 } 

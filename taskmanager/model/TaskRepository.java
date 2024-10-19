@@ -36,11 +36,14 @@ public class TaskRepository {
     }
 
     public void updateDescription(String id, String updatedDescription){
-        int intId = Integer.parseInt(id);
-        String[] result = {tasks.get(intId).description, updatedDescription}; 
-        tasks.get(intId).setDescription(updatedDescription) ;
-        
-        System.out.printf("Task updated successfully (ID: %d) : (old)%s => (new)%s", intId, result[0], result[1]);
+        for (Task task: tasks){
+            if(task.id.equals(id)){
+                tasks.get(Integer.parseInt(id)-1).setDescription(updatedDescription);
+                MessageDisplayer.debMessage("task updated: "+task.description+" => "+updatedDescription);
+                return;
+            }
+        }
+        MessageDisplayer.errMessage("The id you passed doen't exists ID:"+id);
     }
     
     public void markTaskAsInProgress(String id){
