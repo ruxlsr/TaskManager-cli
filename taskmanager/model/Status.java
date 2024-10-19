@@ -6,10 +6,6 @@ package taskmanager.model;
 
 import taskmanager.MessageDisplayer;
 
-/**
- *
- * @author Rux-Lsr
- */
 public enum Status {
     TODO("TODO"),
     IN_PROGRESS("IN_PROGRESS"),

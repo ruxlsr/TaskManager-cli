@@ -4,12 +4,6 @@ package taskmanager.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- *
- * @author Rux-Lsr
- */
-
-// TODO("fix bug on date when update maybe when the task is newl")
 public class Task {
     String id;
     String description;
@@ -48,11 +42,6 @@ public class Task {
     
     public void toggleToInProgress(){
         this.status  = Status.IN_PROGRESS;
-        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
-    }
-    
-    public void toggleToTodo(){
-        this.status  = Status.TODO;
         this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH.mm.ss"));
     }
     

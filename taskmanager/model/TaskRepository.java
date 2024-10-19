@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- *
- * @author Rux-Lsr
- */
 public class TaskRepository {
     List<Task> tasks;
     private static final AtomicLong idGenerator = new AtomicLong(0);
@@ -20,9 +16,7 @@ public class TaskRepository {
 
     public void addTask(String taskDescription) {
         Task newTask  = new Task(String.valueOf(idGenerator.incrementAndGet()), taskDescription);
-        //System.out.println(newTask.toString());
         tasks.add(newTask);
-        //MessageDisplayer.debMessage("Task added successfully. ID:"+ newTask.id);
     }
 
     public void addTask(Task task){
@@ -32,7 +26,6 @@ public class TaskRepository {
 
     public void deleteTask(Task task){
         tasks.remove(task);
-        //MessageDisplayer.debMessage(" Task deleted successfully ID: "+task.id);
     }
 
     public void updateDescription(String id, String updatedDescription){
@@ -56,10 +49,7 @@ public class TaskRepository {
         }
         MessageDisplayer.errMessage("The id you passed doen't exists ID:"+id);
     }
-    public void markTaskAsTodo(String id){
-        int intId = Integer.parseInt(id);
-        tasks.get(intId).toggleToTodo();
-    }
+
     public void markTaskAsDone(String id){
         for (Task task: tasks){
             if(task.id.equals(id)){
@@ -80,8 +70,6 @@ public class TaskRepository {
             }
         }
         jsonBuild.append("\n]");
-
-        //System.out.println(jsonBuild);
         return jsonBuild.toString();
     }
 

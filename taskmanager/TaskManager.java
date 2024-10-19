@@ -1,13 +1,6 @@
 
 package taskmanager;
 
-/*
- * Ajouter des taches,
- * Recuperer des taches
- * supprimer des taches
- * modifier des taches
- * */
-
 import taskmanager.model.Status;
 import taskmanager.model.Task;
 import taskmanager.model.TaskRepository;
@@ -30,7 +23,6 @@ public class TaskManager {
         }
     }
 
-
     public void loadTaskInMemory() throws Exception {
         if(!Files.exists(JSON_FILE_PATH)){
             Files.createFile(JSON_FILE_PATH);
@@ -38,15 +30,12 @@ public class TaskManager {
         }
 
         String json = Files.readString(JSON_FILE_PATH);
-        //MessageDisplayer.debMessage("Contenue de fichier :: "+ json);
         parseJsonString(json);
     }
 
     public void parseJsonString(String json) throws Exception {
         json = json.replace("[", "").replace("]", "");
-        //MessageDisplayer.debMessage("After remove [ and ] ==> "+ json);
         json = json.trim();
-
         String[] jsonObjects = json.split("},");
 
         int i = 0;
@@ -54,8 +43,6 @@ public class TaskManager {
             jsonObject = jsonObject.replace("\n", "").trim();
             jsonObject = jsonObject.endsWith("\"") ? jsonObject+"}":jsonObject;
             jsonObjects[i++] = jsonObject;
-
-            //MessageDisplayer.debMessage(jsonObject);
         }
 
         for(String jsonObject: jsonObjects){
@@ -104,9 +91,6 @@ public class TaskManager {
         }
     }
 
-    /*
-    * Tasks listing
-    */
     public  void listTask(){
         tasksList.list();
     }
@@ -120,12 +104,10 @@ public class TaskManager {
         tasksList.listDone();
     }
 
-
     public void markAsInProgress(String id){
         tasksList.markTaskAsInProgress(id);
         saveTask();
     }
-
     public void markAsDone(String id){
         tasksList.markTaskAsDone(id);
         saveTask();

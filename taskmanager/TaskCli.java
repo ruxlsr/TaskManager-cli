@@ -97,7 +97,7 @@ public class TaskCli {
                     }
                     break;
                 default:
-                    //defaultOutput();
+                    defaultOutput();
             }
         }
     }
