@@ -12,7 +12,7 @@
 1. clone the repository
 ```bash
 git clonehttps://github.com/ruxlsr/TaskManager-cli.git`
-cd taskManager-cli
+cd TaskManager-cli
 ```
 
 3. Compile the source code
