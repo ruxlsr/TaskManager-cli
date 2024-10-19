@@ -3,7 +3,7 @@ package taskmanager;
 import java.util.Arrays;
 
 public class MessageDisplayer {
-    static void errMessage(String err_message){
+    public static void errMessage(String err_message){
         System.err.println("ERROR :: "+err_message);
     }
 

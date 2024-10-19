@@ -19,7 +19,7 @@ public class TaskCli {
                 case "add":
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
-                            taskManager.saveTask(args[1]);
+                            taskManager.add(args[1]);
                             System.out.println("task added => \""+args[1]+"\"");
                         }else{
                             throw new Exception("Syntax Error: add [task to add]");
@@ -31,6 +31,7 @@ public class TaskCli {
                 case "delete":
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
+                            taskManager.delete(args[1]);
                             System.out.println("task deleted : ID -> ("+args[1]+")");
                         }else{
                             throw new Exception("Syntax error: delete [task_id to delete]");

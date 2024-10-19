@@ -8,6 +8,10 @@ package taskmanager;
  * modifier des taches
  * */
 
+import taskmanager.model.Status;
+import taskmanager.model.Task;
+import taskmanager.model.TaskRepository;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +19,10 @@ import java.nio.file.Path;
 
 public class TaskManager {
     final Path JSON_FILE_PATH = Path.of("./task.json");
-    TaskList tasks;
+    TaskRepository tasksList;
 
     public TaskManager(){
-        tasks = new TaskList();
+        tasksList = new TaskRepository();
         try{
             loadTaskInMemory();
         }catch (Exception exception){
@@ -56,13 +60,14 @@ public class TaskManager {
 
         for(String jsonObject: jsonObjects){
             String[] tasksString = parseJsonObjectString(jsonObject);
-            tasks.addTask(
-                    new  Task(tasksString[0].split(":")[1].replace("\"", " ").trim(),
-                            tasksString[1].split(":")[1].replace("\"", " ").trim(),
-                            Status.getStatus(tasksString[2].split(":")[1].replace("\"", " ").trim()) ,
-                            tasksString[3].split(":")[1].replace("\"", " ").trim(),
-                            tasksString[4].split(":")[1].replace("\"", " ").trim()
-                    )
+            tasksList.addTask(
+                new Task(
+                    tasksString[0].split(":")[1].replace("\"", " ").trim(),
+                    tasksString[1].split(":")[1].replace("\"", " ").trim(),
+                    Status.getStatus(tasksString[2].split(":")[1].replace("\"", " ").trim()) ,
+                    tasksString[3].split(":")[1].replace("\"", " ").trim(),
+                    tasksString[4].split(":")[1].replace("\"", " ").trim()
+                )
             );
         }
 
@@ -74,30 +79,44 @@ public class TaskManager {
         return jsonObject.split(", ");
     }
 
-    /*
-     * Charger la liste des taches du fichier en memoire,
-     * Y ajouter celle passer en parametre
-     * sauvegarder dans le fichier
-     */
+    public void add(String description){
+        tasksList.addTask(description);
+        try {
+            saveTask();
+        } catch (IOException e) {
+            MessageDisplayer.errMessage(e);
+        }
+    }
 
-    public void saveTask(String description) throws IOException {
-        tasks.addTask(description);
-        Files.writeString(JSON_FILE_PATH, tasks.toJson());
+    public void delete(String id) throws Exception {
+        for(Task task: tasksList.getTasks()){
+            if(task.getId().equals(id)) {
+                tasksList.deleteTask(task);
+                saveTask();
+                return;
+            }
+        }
+
+        throw new Exception("The id("+id+") you passed doesn't exists");
+    }
+
+    public void saveTask() throws IOException {
+        Files.writeString(JSON_FILE_PATH, tasksList.toJson());
     }
 
     /*
     * Tasks listing
     */
     public  void listTask(){
-        tasks.list();
+        tasksList.list();
     }
     public  void listTaskTodo(){
-        tasks.listTodo();
+        tasksList.listTodo();
     }
     public  void listTaskInProgress(){
-        tasks.listProgress();
+        tasksList.listProgress();
     }
     public  void listTaskDone(){
-        tasks.listDone();
+        tasksList.listDone();
     }
 } 
