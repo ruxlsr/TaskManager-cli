@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
  *
  * @author Rux-Lsr
  */
+
+// TODO("fix bug on date when update maybe when the task is newl")
 public class Task {
     String id;
     String description;

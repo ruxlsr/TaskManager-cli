@@ -58,8 +58,14 @@ public class TaskRepository {
         tasks.get(intId).toggleToTodo();
     }
     public void markTaskAsDone(String id){
-        int intId = Integer.parseInt(id);
-        tasks.get(intId).toggleToDone();
+        for (Task task: tasks){
+            if(task.id.equals(id)){
+                tasks.get(Integer.parseInt(id)-1).toggleToDone();
+                MessageDisplayer.debMessage("Marked as done");
+                return;
+            }
+        }
+        MessageDisplayer.errMessage("The id you passed doen't exists ID:"+id);
     }
     public String toJson() {
         StringBuilder jsonBuild = new StringBuilder();

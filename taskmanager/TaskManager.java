@@ -65,8 +65,8 @@ public class TaskManager {
                     tasksString[0].split(":")[1].replace("\"", " ").trim(),
                     tasksString[1].split(":")[1].replace("\"", " ").trim(),
                     Status.getStatus(tasksString[2].split(":")[1].replace("\"", " ").trim()) ,
-                    tasksString[3].split(":")[1].replace("\"", " ").trim(),
-                    tasksString[4].split(":")[1].replace("\"", " ").trim()
+                    tasksString[4].split(":")[1].replace("\"", " ").trim(),
+                    tasksString[3].split(":")[1].replace("\"", " ").trim()
                 )
             );
         }
@@ -126,7 +126,7 @@ public class TaskManager {
         saveTask();
     }
 
-    public void mrakAsDone(String id){
+    public void markAsDone(String id){
         tasksList.markTaskAsDone(id);
         saveTask();
     }

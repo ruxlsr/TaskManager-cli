@@ -74,8 +74,9 @@ public class TaskCli {
                     break;
                 case "mark-done":
                     try {
-                        if(args.length == 2){
+                        if(args.length == 2 && !args[1].isEmpty()){
                             System.out.println("your command  :: "+args[0]+" "+ args[1]);
+                            taskManager.markAsDone(args[1]);
                         }else{
                             throw new Exception("Syntax error: mark-done [task_id to mark] ");
                         }
