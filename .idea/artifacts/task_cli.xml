@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="task-cli">
+    <output-path>$PROJECT_DIR$/out/artifacts/task_cli</output-path>
+    <root id="archive" name="task-cli.jar" />
+  </artifact>
+</component>
