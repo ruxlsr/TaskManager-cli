@@ -20,9 +20,9 @@ public class TaskCli {
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
                             taskManager.add(args[1]);
-                            System.out.println("task added => \""+args[1]+"\"");
+                            System.out.println("task added successfully(ID: "+args[1]+")");
                         }else{
-                            throw new Exception("Syntax Error: add [task to add]");
+                            throw new Exception("Syntax Error: add <task to add>");
                         }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
@@ -32,9 +32,9 @@ public class TaskCli {
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
                             taskManager.delete(args[1]);
-                            System.out.println("task deleted : ID -> ("+args[1]+")");
+                            System.out.println("task deleted : (ID:"+args[1]+")");
                         }else{
-                            throw new Exception("Syntax error: delete [task_id to delete]");
+                            throw new Exception("Syntax error: delete <task_id to delete>");
                         }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
@@ -44,17 +44,24 @@ public class TaskCli {
                 case "list":
                     try {
                         if(args.length == 1){
-                            System.out.println("your command  :: "+args[0]);
                             taskManager.listTask();
-                        }else if(args.length == 2){
-                            System.out.println("your command  :: "+args[0]+" "+ args[1]);
+                        }else if(args.length == 2 && !args[1].isEmpty()){
                             switch (args[1]){
-                                case "todo" -> taskManager.listTaskTodo();
-                                case "done" -> taskManager.listTaskDone();
-                                case "in-progress" -> taskManager.listTaskInProgress();
+                                case "todo" -> {
+                                    System.out.println("tasks marked as todo :");
+                                    taskManager.listTaskTodo();
+                                }
+                                case "done" -> {
+                                    System.out.println("tasks marked as done :");
+                                    taskManager.listTaskDone();
+                                }
+                                case "in-progress" -> {
+                                    System.out.println("tasks marked as in-progress :");
+                                    taskManager.listTaskInProgress();
+                                }
                             }
                         }else{
-                            throw new Exception("Syntax error: list");
+                            throw new Exception("Syntax error: list <todo|done|in-progress> default <all>");
                         }
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
@@ -63,8 +70,8 @@ public class TaskCli {
                 case "mark-in-progress":
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
-                            System.out.println("your command :: "+args[0]+" "+ args[1]);
                             taskManager.markAsInProgress(args[1]);
+                            System.out.println("in-progress ... (ID:"+args[1]+")");
                         }else{
                             throw new Exception("Syntax error: mark-in-progress [task_id to mark] ");
                         }
@@ -75,8 +82,8 @@ public class TaskCli {
                 case "mark-done":
                     try {
                         if(args.length == 2 && !args[1].isEmpty()){
-                            System.out.println("your command  :: "+args[0]+" "+ args[1]);
                             taskManager.markAsDone(args[1]);
+                            System.out.println("done (ID:"+args[1]+")");
                         }else{
                             throw new Exception("Syntax error: mark-done [task_id to mark] ");
                         }
@@ -101,15 +108,15 @@ public class TaskCli {
             }
         }
     }
-    
+
     public static void defaultOutput(){
         System.out.println("Params: ");
-        System.out.println("-> add [task to add]");
-        System.out.println("-> delete [task_id to delete]");
-        System.out.println("-> update [task_id to update] [new task description]");
-        System.out.println("-> mark-in-progress [task_id to mark]");
+        System.out.println("-> add <description of the task>");
+        System.out.println("-> delete <task_id to delete>");
+        System.out.println("-> update <task_id to update> <new task description>");
+        System.out.println("-> mark-in-progress <task_id to mark>");
         System.out.println("-> mark-done [task_id to mark]");
-        System.out.println("-> list [done|todo|in-progress|all] default all");
+        System.out.println("-> list <done|todo|in-progress|> default all");
     }
    
 }
