@@ -32,7 +32,7 @@ public class TaskRepository {
         for (Task task: tasks){
             if(task.id.equals(id)){
                 tasks.get(Integer.parseInt(id)-1).setDescription(updatedDescription);
-                MessageDisplayer.debMessage("task updated: "+task.description+" => "+updatedDescription);
+                //MessageDisplayer.debMessage("task updated: "+task.description+" => "+updatedDescription);
                 return;
             }
         }
@@ -43,7 +43,7 @@ public class TaskRepository {
         for (Task task: tasks){
             if(task.id.equals(id)){
                 tasks.get(Integer.parseInt(id)-1).toggleToInProgress();
-                MessageDisplayer.debMessage("Marked as in progress");
+               // MessageDisplayer.debMessage("Marked as in progress");
                 return;
             }
         }
@@ -54,7 +54,7 @@ public class TaskRepository {
         for (Task task: tasks){
             if(task.id.equals(id)){
                 tasks.get(Integer.parseInt(id)-1).toggleToDone();
-                MessageDisplayer.debMessage("Marked as done");
+                //MessageDisplayer.debMessage("Marked as done");
                 return;
             }
         }

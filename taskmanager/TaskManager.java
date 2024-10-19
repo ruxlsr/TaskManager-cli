@@ -46,7 +46,7 @@ public class TaskManager {
         }
 
         for(String jsonObject: jsonObjects){
-            String[] tasksString = parseJsonObjectString(jsonObject);
+            String[] tasksString = getParsedObjectAttributes(jsonObject);
             tasksList.addTask(
                 new Task(
                     tasksString[0].split(":")[1].replace("\"", " ").trim(),
@@ -60,9 +60,9 @@ public class TaskManager {
 
     }
 
-    public String[] parseJsonObjectString(String jsonObject){
+    public String[] getParsedObjectAttributes(String jsonObject){
         jsonObject = jsonObject.replace("{", " ").replace("}", " ").trim();
-        //MessageDisplayer.debMessage(jsonObject);
+
         return jsonObject.split(", ");
     }
 
