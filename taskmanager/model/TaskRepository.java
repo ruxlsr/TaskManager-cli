@@ -81,7 +81,7 @@ public class TaskRepository {
     }
 
     public void listTodo(){
-        tasks.stream().filter(task -> task.status == Status.TODO).forEach(System.out::println);
+        tasks.stream().filter(task -> task.status == Status.TODO).forEach(task -> {System.out.printf("%-4s %-25s %-15s %-25s %-25s\n", task.id, task.description, task.status.toString(), task.createdAt, task.updatedAt);});
     }
     public void listDone(){
         tasks.stream().filter(task -> task.status == Status.DONE).forEach(System.out::println);
