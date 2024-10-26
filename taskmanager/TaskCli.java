@@ -48,22 +48,12 @@ public class TaskCli {
                             taskManager.listTask();
                         }else if(args.length == 2 && !args[1].isEmpty()){
                             switch (args[1]){
-                                case "todo" -> {
-                                    System.out.println("tasks marked as todo :");
-                                    taskManager.listTaskTodo();
-                                }
-                                case "done" -> {
-                                    System.out.println("tasks marked as done :");
-                                    taskManager.listTaskDone();
-                                }
-                                case "in-progress" -> {
-                                    System.out.println("tasks marked as in-progress :");
-                                    taskManager.listTaskInProgress();
-                                }
+                                case "todo" -> taskManager.listTaskTodo();
+                                case "done" -> taskManager.listTaskDone();
+                                case "in-progress" -> taskManager.listTaskInProgress();
+                                default -> throw new IllegalStateException("Unexpected value: " + args[1]);
                             }
-                        }else{
-                            throw new Exception("Syntax error: list <todo|done|in-progress> default <all>");
-                        }
+                        }else throw new Exception("Syntax error: list <todo|done|in-progress> default <all>");
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
