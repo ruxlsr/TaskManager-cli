@@ -42,6 +42,7 @@ public class TaskCli {
                     break;
 
                 case "list":
+                    System.out.printf("%-4s %-25s %-15s %-25s %-25s\n", "Id", "Description", "Status", "Created At", "Updated At");
                     try {
                         if(args.length == 1){
                             taskManager.listTask();

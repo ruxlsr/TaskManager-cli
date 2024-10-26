@@ -74,7 +74,10 @@ public class TaskRepository {
     }
 
     public void list(){
-        tasks.forEach(task -> System.out.println(task.toString()));
+        tasks.forEach(task -> {
+            System.out.printf("%-4s %-25s %-15s %-25s %-25s\n", task.id, task.description, task.status.toString(), task.createdAt, task.updatedAt);
+
+        });
     }
 
     public void listTodo(){
