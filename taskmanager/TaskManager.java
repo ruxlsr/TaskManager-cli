@@ -4,6 +4,7 @@ package taskmanager;
 import taskmanager.model.Status;
 import taskmanager.model.Task;
 import taskmanager.model.TaskRepository;
+import taskmanager.utils.JSONParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,53 +18,10 @@ public class TaskManager {
     public TaskManager(){
         tasksList = new TaskRepository();
         try{
-            loadTaskInMemory();
+            tasksList = JSONParser.loadTaskInMemory(JSON_FILE_PATH);
         }catch (Exception exception){
             MessageDisplayer.errMessage(exception);
         }
-    }
-
-    public void loadTaskInMemory() throws Exception {
-        if(!Files.exists(JSON_FILE_PATH)){
-            Files.createFile(JSON_FILE_PATH);
-            Files.writeString(JSON_FILE_PATH, "[\n]");
-        }
-
-        String json = Files.readString(JSON_FILE_PATH);
-        parseJsonString(json);
-    }
-
-    public void parseJsonString(String json) throws Exception {
-        json = json.replace("[", "").replace("]", "");
-        json = json.trim();
-        String[] jsonObjects = json.split("},");
-
-        int i = 0;
-        for(String jsonObject: jsonObjects){
-            jsonObject = jsonObject.replace("\n", "").trim();
-            jsonObject = jsonObject.endsWith("\"") ? jsonObject+"}":jsonObject;
-            jsonObjects[i++] = jsonObject;
-        }
-
-        for(String jsonObject: jsonObjects){
-            String[] tasksString = getParsedObjectAttributes(jsonObject);
-            tasksList.addTask(
-                new Task(
-                    tasksString[0].split(":")[1].replace("\"", " ").trim(),
-                    tasksString[1].split(":")[1].replace("\"", " ").trim(),
-                    Status.getStatus(tasksString[2].split(":")[1].replace("\"", " ").trim()) ,
-                    tasksString[4].split(":")[1].replace("\"", " ").trim(),
-                    tasksString[3].split(":")[1].replace("\"", " ").trim()
-                )
-            );
-        }
-
-    }
-
-    public String[] getParsedObjectAttributes(String jsonObject){
-        jsonObject = jsonObject.replace("{", " ").replace("}", " ").trim();
-
-        return jsonObject.split(", ");
     }
 
     public void add(String description){
